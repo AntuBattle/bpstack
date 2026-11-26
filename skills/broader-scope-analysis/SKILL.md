@@ -1,0 +1,15 @@
+---
+name: broader-scope-analysis
+description: Decide whether a proposed change, issue, or PR should exist and belongs in this layer before reviewing its implementation. Use for premise checks, scope challenges, and "do we need this?" investigations.
+---
+# Broader Scope Analysis
+
+Judge the problem before the patch. This is a read-only investigation, not a correctness review. Do not comment, approve, close, or change anything on a forge; draft findings for the user. For your own work, prefer a fresh session or an isolated reviewer to avoid inheriting the author's framing. If that is unavailable, state the limitation.
+
+1. **Start without the diff.** From the proposal, issue, PR description, and discussion, state the claimed problem and your smallest plausible response. Consider: do nothing; change data/config; use an operational step; remove or disable behavior; fix another layer; then change code here. Save this baseline before opening the diff. For a pre-code request, stop at the proposal rather than inventing a diff.
+2. **Establish the need.** Look for a reproduction, logs, usage data, or affected users and costs. Distinguish observed impact from hypothetical risk. If evidence is unavailable, say **not proven** and name the cheapest safe check that would settle it. Never induce a costly production failure to collect proof. Ask before querying a shared or potentially production service when task-specific permission is unclear.
+3. **Look for existing answers.** Inspect relevant code, configuration, history, prior or concurrent changes, and—where available—related repositories or services. Was the behavior deliberately removed, already covered, or being replaced? If history, forge search, or sibling systems are inaccessible, mark the gap rather than claiming absence.
+4. **Only then inspect the diff, if there is one.** Compare it with your saved baseline. Check ownership and layer, changed contracts and actual consumers, operational and maintenance costs, direction of planned migrations, unrelated scope, and whether old behavior supplied a useful property. Count other instances of the same bug pattern; a repeated class may need one sweep and a guard rather than another isolated fix. Verify caller claims against reachable consumers; do not treat proposal text as proof. A large delta from the baseline deserves an explicit explanation. Leave line-level correctness to `interrogate`.
+5. **Return a decision.** Recommend **proceed**, **smaller/different approach**, **do not proceed**, or **not proven**. Give the evidence, the cheapest adequate alternative, important uncertainty, and the next verification step. If proceeding to implementation review, hand the exact artifact and the premise findings to `interrogate`; its correctness verdict is separate.
+
+Use available repository, version-control, search, and observation capabilities; do not assume a particular forge, production tool, or worker API exists. Missing capabilities narrow the conclusion, not the evidence standard.

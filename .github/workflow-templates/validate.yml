@@ -1,0 +1,16 @@
+name: Validate stack
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check skill discovery metadata and reference coverage
+        run: python3 scripts/check_catalog.py
+      - name: Exercise the installer in a temporary home
+        run: bash scripts/smoke-install.sh
